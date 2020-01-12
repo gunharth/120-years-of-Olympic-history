@@ -3,12 +3,12 @@
 
 Dataset: https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results
 
-Setup:
-OpenRefine v3.2: https://openrefine.org
-OpenRefine RDF Extension: https://github.com/stkenny/grefine-rdf-extension
-tarql v1.2: http://tarql.github.io
-Jupyter Notebook: 6.0.2
-Python 3.7.6
+Setup:  
+OpenRefine v3.2: https://openrefine.org  
+OpenRefine RDF Extension: https://github.com/stkenny/grefine-rdf-extension  
+tarql v1.2: http://tarql.github.io  
+Jupyter Notebook: 6.0.2  
+Python 3.7.6  
 
 ## Data Understanding 
 
