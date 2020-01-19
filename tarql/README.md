@@ -1,22 +1,18 @@
 # tarql
 
-Convert Austrian athletes csv file to turtle rdf
+Construct austrian athletes into turtle from the full olympics csv file.
 
-Commands are relative to the root of this repository. tarql command path depends on where you got it installed on your system.
+Commands are relative to the root of this repository - the tarql command path depends on where you got it installed on your system.
 
 First tests:  
-csv file of all Austrian athletes: Athletes_AUT.csv
-tarql file: transform_athletes.sparql
-result: athletes_aut.ttl
+olympics csv file: olympics.csv  
+tarql file: transform_athletes.sparql  
+result: athletes_aut.ttl  
 
-TODO: all in all details to the query
-Helpful example: https://github.com/tarql/tarql/wiki/Examples
-
-command: ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql 
-To save to the output file:
+command: ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql  
+To save to an output file use the following command:
 ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql > tarql/athletes_aut.ttl  
 
-
-for quick testing LIMIT the results
+For testing limit the results in the sparql file with LIMIT  
 
 Validate the result with http://ttl.summerofcode.be/

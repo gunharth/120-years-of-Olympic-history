@@ -33,6 +33,7 @@ WHERE {
   BIND ( xsd:integer(?Height) AS ?intHeight )
   BIND ( xsd:decimal(?Weight) AS ?decWeight )
 
+  # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
 }
 # LIMIT 10
