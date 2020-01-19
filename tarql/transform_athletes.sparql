@@ -12,9 +12,9 @@ CONSTRUCT {
       dbo:age ?intAge;
       dbo:height ?intHeight;
       dbo:weight ?decWeight;
-      ex:noc ?NOC .
+      ex:noc ?nocUri .
   # Sex
-  ?Gender rdfs:label ?genderFull .
+  ?Gender rdfs:label ?genderFull;
 }
 FROM <file:olympics.csv>
 WHERE {
@@ -32,6 +32,9 @@ WHERE {
   BIND ( xsd:integer(?Age) AS ?intAge )
   BIND ( xsd:integer(?Height) AS ?intHeight )
   BIND ( xsd:decimal(?Weight) AS ?decWeight )
+
+  #NOC
+  BIND ( URI( CONCAT(?baseURI, "NOC/", ?NOC) ) AS ?nocUri )
 
   # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
