@@ -9,9 +9,9 @@ olympics csv file: olympics.csv
 tarql file: transform_athletes.sparql  
 result: athletes_aut.ttl  
 
-command: ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql  
+command: ./../tarql/bin/tarql tarql/transform_athletes.sparql  
 To save to an output file use the following command:
-./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql > tarql/athletes_aut.ttl  
+./../tarql/bin/tarql tarql/transform_athletes.sparql > tarql/athletes_aut.ttl  
 
 For testing limit the results in the sparql file with LIMIT  
 
