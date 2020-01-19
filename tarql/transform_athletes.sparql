@@ -3,9 +3,9 @@ prefix ex: <http://example.org/ontology/olympics/>
 prefix exa: <http://example.org/resource/olympics/athlete/>
 prefix exn: <http://example.org/resource/olympics/NOC/>
 prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix owl: <http://www.w3.org/2002/07/owl#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
 # Goal
 # exa:MargareteGreteAdler a foaf:Person;
@@ -20,6 +20,9 @@ prefix foaf: <http://xmlns.com/foaf/0.1/>
 CONSTRUCT {
   ?uri a foaf:Person ;
       rdfs:label ?Name;
+      dbo:age ?Age;
+      dbo:height ?Height;
+      dbo:weight ?Weight;
 }
 FROM <file:Athletes_AUT.csv>
 WHERE {
@@ -29,6 +32,13 @@ WHERE {
   BIND(REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean)
 
   BIND (URI(CONCAT(?baseURI, "athlete/", ?NameClean)) AS ?uri)
+
+  # BIND(
+  #   IF(?Age != "", "<1M",
+  #   ">20M")))))
+  #   AS ?layer).
+  # BIND (xsd:integer(?Age) AS ?intAge)
+  # BIND (xsd:integer(?Height) AS ?intHeight)
   # BIND (URI(CONCAT('https://codingdavinci.de/daten/Rhein-Main_2018/Weltkulturen_Museum/', ?Inventarnr_)) AS ?uri)
   # BIND (URI(SUBSTR(?Standardbild, 64)) AS ?depiction)
 }
