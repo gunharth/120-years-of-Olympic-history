@@ -1,0 +1,38 @@
+prefix dbo: <http://dbpedia.org/ontology/>
+prefix ex: <http://example.org/ontology/olympics/>
+prefix exa: <http://example.org/resource/olympics/athlete/>
+prefix exn: <http://example.org/resource/olympics/NOC/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+
+# Goal
+# exa:MargareteGreteAdler a foaf:Person;
+#   ex:noc exn:AUT;
+#   rdfs:label "Margarete \"Grete\" Adler";
+#   foaf:age "16"^^<http://www.w3.org/2001/XMLSchema#int>, "28"^^<http://www.w3.org/2001/XMLSchema#int>;
+#   foaf:gender exr:F .
+
+# exr:F rdfs:label "female" .
+
+
+CONSTRUCT {
+  ?uri a foaf:Person ;
+      rdfs:label ?Name;
+}
+FROM <file:Athletes_AUT.csv>
+WHERE {
+  BIND("http://example.org/resource/olympics/" AS ?baseURI)
+
+  # BIND (URI(CONCAT(?baseURI, "athlete/", ENCODE_FOR_URI(?Name))) AS ?uri)
+  BIND(REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean)
+
+  BIND (URI(CONCAT(?baseURI, "athlete/", ?NameClean)) AS ?uri)
+  # BIND (URI(CONCAT('https://codingdavinci.de/daten/Rhein-Main_2018/Weltkulturen_Museum/', ?Inventarnr_)) AS ?uri)
+  # BIND (URI(SUBSTR(?Standardbild, 64)) AS ?depiction)
+}
+# LIMIT 10
+
+# FROM <file:Weltkulturen_Museum/Metadaten_Weltkulturen Museum_Frankfurt.csv#delimiter=%3B;encoding=utf-8>
+# Standardbild;Inventarnr_;Objektbezeichnung;Ethnie;Sammler;Alle_Beteiligten;Datierung;Erwerb_datum;Erwerbungsart;Maße;Mat_Technik;Gattung;Geogr_BezugG;Geogr_BezugW;Literatur_WVZ;Ausstellungen;Objektinformation;Fotograf;Sammlung
