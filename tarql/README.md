@@ -12,7 +12,7 @@ result: athletes_aut.ttl
 TODO: all in all details to the query
 Helpful example: https://github.com/tarql/tarql/wiki/Examples
 
-command: ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql > tarql/athletes_aut.ttl  
+command: ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql 
 To save to the output file:
 ./../tarql/bin/tarql --delimiter "," tarql/transform_athletes.sparql > tarql/athletes_aut.ttl  
 

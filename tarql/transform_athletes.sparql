@@ -1,48 +1,38 @@
 prefix dbo: <http://dbpedia.org/ontology/>
 prefix ex: <http://example.org/ontology/olympics/>
-prefix exa: <http://example.org/resource/olympics/athlete/>
-prefix exn: <http://example.org/resource/olympics/NOC/>
-prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix foaf: <http://xmlns.com/foaf/0.1/>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
-# Goal
-# exa:MargareteGreteAdler a foaf:Person;
-#   ex:noc exn:AUT;
-#   rdfs:label "Margarete \"Grete\" Adler";
-#   foaf:age "16"^^<http://www.w3.org/2001/XMLSchema#int>, "28"^^<http://www.w3.org/2001/XMLSchema#int>;
-#   foaf:gender exr:F .
-
-# exr:F rdfs:label "female" .
-
-
 CONSTRUCT {
+  # Athlete
   ?uri a foaf:Person ;
       rdfs:label ?Name;
-      dbo:age ?Age;
-      dbo:height ?Height;
-      dbo:weight ?Weight;
+      foaf:gender ?Gender;
+      dbo:age ?intAge;
+      dbo:height ?intHeight;
+      dbo:weight ?decWeight;
+      ex:noc ?NOC .
+  # Sex
+  ?Gender rdfs:label ?genderFull .
 }
-FROM <file:Athletes_AUT.csv>
+FROM <file:olympics.csv>
 WHERE {
-  BIND("http://example.org/resource/olympics/" AS ?baseURI)
+  BIND( "http://example.org/resource/olympics/" AS ?baseURI )
 
-  # BIND (URI(CONCAT(?baseURI, "athlete/", ENCODE_FOR_URI(?Name))) AS ?uri)
-  BIND(REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean)
+  # Name
+  BIND( REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean )
+  BIND ( URI( CONCAT(?baseURI, "athlete/", ?NameClean) ) AS ?uri )
 
-  BIND (URI(CONCAT(?baseURI, "athlete/", ?NameClean)) AS ?uri)
+  # Sex
+  BIND ( URI( CONCAT(?baseURI, "gender/", ?Sex) ) AS ?Gender )
+  BIND ( IF( ?Sex = "F", "female", "male" ) as ?genderFull )
 
-  # BIND(
-  #   IF(?Age != "", "<1M",
-  #   ">20M")))))
-  #   AS ?layer).
-  # BIND (xsd:integer(?Age) AS ?intAge)
-  # BIND (xsd:integer(?Height) AS ?intHeight)
-  # BIND (URI(CONCAT('https://codingdavinci.de/daten/Rhein-Main_2018/Weltkulturen_Museum/', ?Inventarnr_)) AS ?uri)
-  # BIND (URI(SUBSTR(?Standardbild, 64)) AS ?depiction)
+  # Age, Height, Weight
+  BIND ( xsd:integer(?Age) AS ?intAge )
+  BIND ( xsd:integer(?Height) AS ?intHeight )
+  BIND ( xsd:decimal(?Weight) AS ?decWeight )
+
+  FILTER ( regex(str(?NOC), "AUT") )
 }
 # LIMIT 10
-
-# FROM <file:Weltkulturen_Museum/Metadaten_Weltkulturen Museum_Frankfurt.csv#delimiter=%3B;encoding=utf-8>
-# Standardbild;Inventarnr_;Objektbezeichnung;Ethnie;Sammler;Alle_Beteiligten;Datierung;Erwerb_datum;Erwerbungsart;Maße;Mat_Technik;Gattung;Geogr_BezugG;Geogr_BezugW;Literatur_WVZ;Ausstellungen;Objektinformation;Fotograf;Sammlung
