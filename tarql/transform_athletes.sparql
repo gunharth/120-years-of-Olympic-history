@@ -21,8 +21,11 @@ WHERE {
   BIND( "http://example.org/resource/olympics/" AS ?baseURI )
 
   # Name
-  BIND( REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean )
-  BIND ( URI( CONCAT(?baseURI, "athlete/", ?NameClean) ) AS ?uri )
+  # BIND( REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean )
+  # BIND ( URI( CONCAT(?baseURI, "athlete/", ?NameClean) ) AS ?uri )
+  BIND( REPLACE(?Name, " ", "_") AS ?nameUnderscore )
+  BIND( REPLACE(?nameUnderscore, "[^a-zA-Z0–9_]", "") AS ?nameClean )
+  BIND ( URI( CONCAT(?baseURI, ?nameClean) ) AS ?uri )
 
   # Sex
   BIND ( URI( CONCAT(?baseURI, "gender/", ?Sex) ) AS ?Gender )
@@ -39,4 +42,4 @@ WHERE {
   # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
 }
-# LIMIT 10
+LIMIT 10

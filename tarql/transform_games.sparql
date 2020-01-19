@@ -1,0 +1,39 @@
+prefix dbo: <http://dbpedia.org/ontology/>
+prefix ex: <http://example.org/ontology/olympics/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  # Games
+  ?uri a dbo:Olympics ;
+      dbo:location ?cityUri;
+      dbo:year ?intYear;
+      ex:season ?Season .
+  # City
+  ?cityUri a dbo:City;
+    rdfs:label ?City .
+  # City
+  ?seasonUri rdfs:label ?Season;
+}
+FROM <file:olympics.csv>
+WHERE {
+  BIND( "http://example.org/resource/olympics/" AS ?baseURI )
+
+  # # uri
+  BIND ( URI( CONCAT(?baseURI, "games/", ?Year, "/", ?Season) ) AS ?uri )
+
+  # city uri
+  BIND( REPLACE(?City, " ", "_") AS ?cityUnderscore )
+  BIND( REPLACE(?cityUnderscore, "[^a-zA-Z0–9_]", "") AS ?cityClean )
+  BIND ( URI( CONCAT(?baseURI, ?cityClean) ) AS ?cityUri )
+
+  # year
+  BIND ( xsd:integer(?Year) AS ?intYear )
+
+  # Season
+  BIND ( URI( CONCAT(?baseURI, ?Season) ) AS ?seasonUri )
+
+  # Filter for Austrians only
+  FILTER ( regex(str(?NOC), "AUT") )
+}
+LIMIT 10
