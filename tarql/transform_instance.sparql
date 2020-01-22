@@ -1,0 +1,30 @@
+prefix ex: <http://example.org/ontology/olympics/>
+
+CONSTRUCT {
+  # Instance
+  ?uri
+    ex:athlete ?nameUri;
+    ex:event ?EventLang;
+    ex:games ?gamesUri .
+}
+FROM <file:olympics.csv>
+WHERE {
+  BIND( "http://example.org/resource/olympics/" AS ?baseURI )
+
+  # athlete
+  BIND( REPLACE(?Name, " ", "_") AS ?nameUnderscore )
+  BIND( REPLACE(?nameUnderscore, "[^a-zA-Z0–9_]", "") AS ?nameClean )
+  BIND ( URI( CONCAT(?baseURI, "athlete/", ?nameClean) ) AS ?nameUri )
+
+  # # instance uri
+  BIND ( STRLANG(?Event, "en") AS ?EventLang)
+  BIND( REPLACE(?Event, "[^a-zA-Z0–9_]", "") AS ?eventClean )
+  BIND ( URI( CONCAT(?baseURI, "instance/", ?eventClean, "/", ?Year, "/", ?Season, "/", ?nameClean) ) AS ?uri )
+
+  # games
+  BIND ( URI( CONCAT(?baseURI, "games/", ?Year, "/", ?Season) ) AS ?gamesUri )
+
+  # Filter for Austrians only
+  FILTER ( regex(str(?NOC), "AUT") )
+}
+# LIMIT 10
