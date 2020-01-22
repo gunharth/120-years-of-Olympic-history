@@ -2,17 +2,12 @@
 
 Construct austrian athletes into turtle from the full olympics csv file.
 
-Commands are relative to the root of this repository - the tarql command path depends on where you got it installed on your system.
-
-First tests:  
-olympics csv file: olympics.csv  
-tarql file: transform_athletes.sparql  
-result: Athletes.ttl  
+Below commands are relative to the root of this repository - ammend the path to tarql depending on your setup.
 
 command:  
 To save to an output file use the following command:
 ./../tarql/bin/tarql tarql/transform_athletes.sparql > tarql/Athletes.ttl  
 
-For testing limit the results in the sparql file with LIMIT  
+For testing limit the results in the sparql file with the LIMIT clause at the bottom. 
 
 Validate the result with http://ttl.summerofcode.be/
