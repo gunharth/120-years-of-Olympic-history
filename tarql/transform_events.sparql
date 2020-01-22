@@ -1,0 +1,31 @@
+prefix dbo: <http://dbpedia.org/ontology/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  # Event
+  ?uri a dbo:SportsEvent ;
+      rdfs:label ?EventLang;
+      rdfs:subClassOf ?sportUri.
+
+  # Sport
+  ?sportUri rdfs:label ?SportLang;
+}
+FROM <file:olympics.csv>
+WHERE {
+  BIND( "http://example.org/resource/olympics/" AS ?baseURI )
+
+  # Event
+  BIND ( STRLANG(?Event, "en") AS ?EventLang)
+  BIND( REPLACE(?Event, "[^a-zA-Z0–9_]", "") AS ?eventClean )
+  BIND ( URI( CONCAT(?baseURI, "event/", ?eventClean) ) AS ?uri )
+
+  # Sport
+  BIND ( STRLANG(?Sport, "en") AS ?SportLang)
+  BIND( REPLACE(?Sport, "[^a-zA-Z0–9_]", "") AS ?sportClean )
+  BIND ( URI( CONCAT(?baseURI, "sport/", ?sportClean) ) AS ?sportUri )
+
+  # Filter for Austrians only
+  FILTER ( regex(str(?NOC), "AUT") )
+}
+# LIMIT 10

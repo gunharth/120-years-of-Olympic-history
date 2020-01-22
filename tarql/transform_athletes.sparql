@@ -27,7 +27,7 @@ WHERE {
   BIND ( STRLANG(?Name, "en") AS ?NameLang)
   BIND( REPLACE(?Name, " ", "_") AS ?nameUnderscore )
   BIND( REPLACE(?nameUnderscore, "[^a-zA-Z0–9_]", "") AS ?nameClean )
-  BIND ( URI( CONCAT(?baseURI, ?nameClean) ) AS ?uri )
+  BIND ( URI( CONCAT(?baseURI, "athlete/", ?nameClean) ) AS ?uri )
 
   # Sex
   BIND ( URI( CONCAT(?baseURI, "gender/", ?Sex) ) AS ?Gender )
