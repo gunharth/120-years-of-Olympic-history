@@ -9,7 +9,7 @@ olympics csv file: olympics.csv
 tarql file: transform_athletes.sparql  
 result: Athletes.ttl  
 
-command: ./../tarql/bin/tarql tarql/transform_athletes.sparql  
+command:  
 To save to an output file use the following command:
 ./../tarql/bin/tarql tarql/transform_athletes.sparql > tarql/Athletes.ttl  
 

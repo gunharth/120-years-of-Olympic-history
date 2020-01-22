@@ -8,12 +8,12 @@ CONSTRUCT {
   ?uri a dbo:Olympics ;
       dbo:location ?cityUri;
       dbo:year ?intYear;
-      ex:season ?Season .
+      ex:season ?seasonUri .
   # City
   ?cityUri a dbo:City;
-    rdfs:label ?City .
+    rdfs:label ?CityLang .
   # City
-  ?seasonUri rdfs:label ?Season;
+  ?seasonUri rdfs:label ?SeasonLang;
 }
 FROM <file:olympics.csv>
 WHERE {
@@ -23,6 +23,7 @@ WHERE {
   BIND ( URI( CONCAT(?baseURI, "games/", ?Year, "/", ?Season) ) AS ?uri )
 
   # city uri
+  BIND ( STRLANG(?City, "en") AS ?CityLang)
   BIND( REPLACE(?City, " ", "_") AS ?cityUnderscore )
   BIND( REPLACE(?cityUnderscore, "[^a-zA-Z0–9_]", "") AS ?cityClean )
   BIND ( URI( CONCAT(?baseURI, ?cityClean) ) AS ?cityUri )
@@ -31,9 +32,10 @@ WHERE {
   BIND ( xsd:integer(?Year) AS ?intYear )
 
   # Season
+  BIND ( STRLANG(?Season, "en") AS ?SeasonLang)
   BIND ( URI( CONCAT(?baseURI, ?Season) ) AS ?seasonUri )
 
   # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
 }
-LIMIT 10
+# LIMIT 10

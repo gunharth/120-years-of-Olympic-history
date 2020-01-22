@@ -1,5 +1,6 @@
 prefix dbo: <http://dbpedia.org/ontology/>
 prefix ex: <http://example.org/ontology/olympics/>
+prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix foaf: <http://xmlns.com/foaf/0.1/>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -7,7 +8,7 @@ prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 CONSTRUCT {
   # Athlete
   ?uri a foaf:Person ;
-      rdfs:label ?Name;
+      rdfs:label ?NameLang;
       foaf:gender ?Gender;
       dbo:age ?intAge;
       dbo:height ?intHeight;
@@ -23,6 +24,7 @@ WHERE {
   # Name
   # BIND( REPLACE(?Name, "[^a-zA-Z0–9]", "") AS ?NameClean )
   # BIND ( URI( CONCAT(?baseURI, "athlete/", ?NameClean) ) AS ?uri )
+  BIND ( STRLANG(?Name, "en") AS ?NameLang)
   BIND( REPLACE(?Name, " ", "_") AS ?nameUnderscore )
   BIND( REPLACE(?nameUnderscore, "[^a-zA-Z0–9_]", "") AS ?nameClean )
   BIND ( URI( CONCAT(?baseURI, ?nameClean) ) AS ?uri )
@@ -42,4 +44,4 @@ WHERE {
   # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
 }
-LIMIT 10
+# LIMIT 10
