@@ -9,11 +9,11 @@ CONSTRUCT {
       dbo:location ?cityUri;
       dbo:year ?intYear;
       ex:season ?seasonUri .
+  # Season
+   ?seasonUri rdfs:label ?SeasonLang .
   # City
   ?cityUri a dbo:City;
     rdfs:label ?CityLang .
-  # City
-  ?seasonUri rdfs:label ?SeasonLang;
 }
 FROM <file:olympics.csv>
 WHERE {

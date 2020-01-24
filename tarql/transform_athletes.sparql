@@ -10,7 +10,7 @@ CONSTRUCT {
   ?uri a foaf:Person ;
       rdfs:label ?NameLang;
       foaf:gender ?Gender;
-      dbo:age ?intAge;
+      foaf:age ?intAge;
       dbo:height ?intHeight;
       dbo:weight ?decWeight;
       ex:noc ?nocUri .

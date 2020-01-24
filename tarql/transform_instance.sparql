@@ -5,7 +5,8 @@ CONSTRUCT {
   ?uri
     ex:athlete ?nameUri;
     ex:event ?EventLang;
-    ex:games ?gamesUri .
+    ex:games ?gamesUri;
+    ex:medal ?MedalLang .
 }
 FROM <file:olympics.csv>
 WHERE {
@@ -23,6 +24,9 @@ WHERE {
 
   # games
   BIND ( URI( CONCAT(?baseURI, "games/", ?Year, "/", ?Season) ) AS ?gamesUri )
+
+  # medal
+  BIND (IF(?Medal != 'NA', STRLANG(?Medal, "en"), ?nothing) AS ?MedalLang)
 
   # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
