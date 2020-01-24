@@ -3,10 +3,10 @@ prefix ex: <http://example.org/ontology/olympics/>
 CONSTRUCT {
   # Instance
   ?uri
-    ex:athlete ?nameUri;
-    ex:event ?EventLang;
-    ex:games ?gamesUri;
-    ex:medal ?MedalLang .
+    ex:athlete ?NameUri;
+    ex:event ?EventUri;
+    ex:games ?GamesUri;
+    ex:medal ?MedalUri .
 }
 FROM <file:olympics.csv>
 WHERE {
@@ -15,18 +15,21 @@ WHERE {
   # athlete
   BIND( REPLACE(?Name, " ", "_") AS ?nameUnderscore )
   BIND( REPLACE(?nameUnderscore, "[^a-zA-Z0–9_]", "") AS ?nameClean )
-  BIND ( URI( CONCAT(?baseURI, "athlete/", ?nameClean) ) AS ?nameUri )
+  BIND ( URI( CONCAT(?baseURI, "athlete/", ?nameClean) ) AS ?NameUri )
 
   # # instance uri
-  BIND ( STRLANG(?Event, "en") AS ?EventLang)
+  # BIND ( STRLANG(?Event, "en") AS ?EventLang)
   BIND( REPLACE(?Event, "[^a-zA-Z0–9_]", "") AS ?eventClean )
   BIND ( URI( CONCAT(?baseURI, "instance/", ?eventClean, "/", ?Year, "/", ?Season, "/", ?nameClean) ) AS ?uri )
 
+  # event
+  BIND ( URI( CONCAT(?baseURI, "event/", ?eventClean) ) AS ?EventUri )
+
   # games
-  BIND ( URI( CONCAT(?baseURI, "games/", ?Year, "/", ?Season) ) AS ?gamesUri )
+  BIND ( URI( CONCAT(?baseURI, "games/", ?Year, "/", ?Season) ) AS ?GamesUri )
 
   # medal
-  BIND (IF(?Medal != 'NA', STRLANG(?Medal, "en"), ?nothing) AS ?MedalLang)
+  BIND (IF(?Medal != 'NA', URI( CONCAT(?baseURI, "medal", "/", ?Medal) ), ?nothing) AS ?MedalUri)
 
   # Filter for Austrians only
   FILTER ( regex(str(?NOC), "AUT") )
